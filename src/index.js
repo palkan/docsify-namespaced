@@ -77,6 +77,8 @@ function docsifyNamespaced(hook, vm) {
 
     const parts = getUrlParts();
 
+    const origUrl = parts.join('/');
+
     // Only load default namespace for root path
     const loadDefault = (parts.length === 2) && parts[1] === '';
 
@@ -108,8 +110,10 @@ function docsifyNamespaced(hook, vm) {
       return namespaceSidebarLinks(origSidebar.apply(this, arguments));
     };
 
-    // Load default namespace
-    if (loadDefault) { goToUrl(parts.join('/')); }
+    // Load default namespace if requried
+    const newUrl = parts.join('/');
+
+    if (loadDefault && (newUrl !== origUrl)) { goToUrl(newUrl); }
   });
 
   hook.afterEach(function(html, next){
